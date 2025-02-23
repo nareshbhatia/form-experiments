@@ -7,11 +7,11 @@ export interface NavItem {
 
 export const mainNavItems: NavItem[] = [
   {
-    title: 'Typography',
-    href: RoutePath.Typography,
+    title: 'Simple Form',
+    href: RoutePath.SimpleForm,
   },
   {
-    title: 'Buttons',
-    href: RoutePath.Buttons,
+    title: 'Modular Form',
+    href: RoutePath.ModularForm,
   },
 ];

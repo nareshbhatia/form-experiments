@@ -1,4 +1,4 @@
 export enum RoutePath {
-  Typography = '/',
-  Buttons = '/buttons',
+  SimpleForm = '/',
+  ModularForm = '/modular-form',
 }

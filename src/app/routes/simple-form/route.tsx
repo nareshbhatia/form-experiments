@@ -1,4 +1,4 @@
-export function TypographyPage() {
+export function SimpleFormPage() {
   return (
     <div className="container flex-1">
       <main className="py-8">

@@ -1,7 +1,7 @@
 import { Icons } from '@/components/Icons';
 import { Button } from '@/components/ui/button';
 
-export function ButtonsPage() {
+export function ModularFormPage() {
   return (
     <div className="container flex-1">
       <main className="flex flex-col gap-8 py-8">
