@@ -1,9 +1,9 @@
 'use client';
 
 import { UserForm } from './UserForm';
-import { user1 } from '../../../data';
-import type { User } from '../../../schema';
 import { ObjectViewer } from '@/components/ObjectViewer';
+import { user1 } from '@/data';
+import type { User } from '@/schema';
 import { useState } from 'react';
 
 export function SimpleFormPage() {

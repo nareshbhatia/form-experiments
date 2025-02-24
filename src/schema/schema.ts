@@ -12,7 +12,13 @@ export const AddressSchema = z.object({
   company: z.string().trim().optional(),
   street: z.string().trim().min(1),
   city: z.string().trim().min(1),
-  country: z.string().trim().min(1),
+  state: z.string().trim().min(2),
+  zip: z
+    .string()
+    .trim()
+    .min(5)
+    .max(5)
+    .regex(/^\d{5}$/),
 });
 
 export type Address = z.infer<typeof AddressSchema>;
