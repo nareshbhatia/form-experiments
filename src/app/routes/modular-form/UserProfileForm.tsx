@@ -35,7 +35,7 @@ export function UserProfileForm({
         onSubmit={form.handleSubmit(onSubmit)}
       >
         <UserForm />
-        <AddressForm />
+        <AddressForm parentName="address" title="Address" />
 
         <div className="flex gap-2">
           <Button type="submit">{userProfile ? 'Update' : 'Create'}</Button>

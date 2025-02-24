@@ -8,7 +8,15 @@ My experiments with form management
 2. Styling: TailwindCSS 4 + shadcn/ui
 3. Linting: Code Shaper ESLint configuration
 
-![Screenshot](assets/screenshot.png)
+## Screenshots
+
+### Simple Form
+
+![Screenshot](assets/simple-form.png)
+
+### Modular Form
+
+![Screenshot](assets/modular-form.png)
 
 ## Prerequisites for development
 

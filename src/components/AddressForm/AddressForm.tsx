@@ -11,17 +11,24 @@ import {
 import { Input } from '@/components/ui/input';
 import { useFormContext } from 'react-hook-form';
 
-export function AddressForm() {
+export interface AddressFormProps {
+  title?: string;
+
+  /** parent name e.g. "shippingAddress" */
+  parentName: string;
+}
+
+export function AddressForm({ title, parentName }: AddressFormProps) {
   const form = useFormContext();
 
   return (
     <div>
-      <Heading3>Address</Heading3>
+      {title !== undefined ? <Heading3>{title}</Heading3> : undefined}
 
       <div className="flex flex-col gap-y-4">
         <FormField
           control={form.control}
-          name="address.company"
+          name={`${parentName}.company`}
           render={({ field }) => (
             <FormItem>
               <FormLabel>Company</FormLabel>
@@ -35,7 +42,7 @@ export function AddressForm() {
 
         <FormField
           control={form.control}
-          name="address.street"
+          name={`${parentName}.street`}
           render={({ field }) => (
             <FormItem>
               <FormLabel>Street</FormLabel>
@@ -50,7 +57,7 @@ export function AddressForm() {
         <div className="flex gap-x-4">
           <FormField
             control={form.control}
-            name="address.city"
+            name={`${parentName}.city`}
             render={({ field }) => (
               <FormItem className="flex-1">
                 <FormLabel>City</FormLabel>
@@ -64,7 +71,7 @@ export function AddressForm() {
 
           <FormField
             control={form.control}
-            name="address.state"
+            name={`${parentName}.state`}
             render={({ field }) => (
               <FormItem className="flex-1">
                 <FormLabel>State</FormLabel>
@@ -78,10 +85,10 @@ export function AddressForm() {
 
           <FormField
             control={form.control}
-            name="address.zip"
+            name={`${parentName}.zip`}
             render={({ field }) => (
               <FormItem className="flex-1">
-                <FormLabel>ZIP</FormLabel>
+                <FormLabel>Zip</FormLabel>
                 <FormControl>
                   <Input {...field} />
                 </FormControl>
