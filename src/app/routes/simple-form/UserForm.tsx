@@ -11,25 +11,26 @@ import {
   FormMessage,
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
-import { emptyUser } from '@/data';
-import type { User } from '@/schema';
-import { UserSchema } from '@/schema';
+import { newUser } from '@/data';
+import { userSchema } from '@/types';
+import type { User } from '@/types';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 
 export interface UserFormProps {
-  user?: User;
+  existingUser?: User;
   onSubmit: (user: User) => void;
 }
 
-export function UserForm({ user, onSubmit }: UserFormProps) {
+export function UserForm({ existingUser, onSubmit }: UserFormProps) {
   const form = useForm<User>({
-    resolver: zodResolver(UserSchema),
-    defaultValues: user,
+    resolver: zodResolver(userSchema),
+    mode: 'onChange',
+    defaultValues: existingUser ?? newUser,
   });
 
   const handleReset = () => {
-    form.reset(emptyUser);
+    form.reset(existingUser ?? newUser);
   };
 
   return (
@@ -86,7 +87,7 @@ export function UserForm({ user, onSubmit }: UserFormProps) {
         </div>
 
         <div className="flex gap-2">
-          <Button type="submit">{user ? 'Update' : 'Create'}</Button>
+          <Button type="submit">{existingUser ? 'Update' : 'Create'}</Button>
           <Button onClick={handleReset} variant="secondary">
             Reset
           </Button>

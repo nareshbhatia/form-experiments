@@ -4,28 +4,29 @@ import { AddressForm } from '@/components/AddressForm';
 import { UserForm } from '@/components/UserForm';
 import { Button } from '@/components/ui/button';
 import { Form } from '@/components/ui/form';
-import { emptyUserProfile } from '@/data';
-import type { UserProfile } from '@/schema';
-import { UserProfileSchema } from '@/schema';
+import { newUserProfile } from '@/data';
+import { userProfileSchema } from '@/types';
+import type { UserProfile } from '@/types';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 
 export interface UserProfileFormProps {
-  userProfile?: UserProfile;
+  existingUserProfile?: UserProfile;
   onSubmit: (userProfile: UserProfile) => void;
 }
 
 export function UserProfileForm({
-  userProfile,
+  existingUserProfile,
   onSubmit,
 }: UserProfileFormProps) {
   const form = useForm<UserProfile>({
-    resolver: zodResolver(UserProfileSchema),
-    defaultValues: userProfile,
+    resolver: zodResolver(userProfileSchema),
+    mode: 'onChange',
+    defaultValues: existingUserProfile ?? newUserProfile,
   });
 
   const handleReset = () => {
-    form.reset(emptyUserProfile);
+    form.reset(existingUserProfile ?? newUserProfile);
   };
 
   return (
@@ -38,7 +39,9 @@ export function UserProfileForm({
         <AddressForm parentName="address" title="Address" />
 
         <div className="flex gap-2">
-          <Button type="submit">{userProfile ? 'Update' : 'Create'}</Button>
+          <Button type="submit">
+            {existingUserProfile ? 'Update' : 'Create'}
+          </Button>
           <Button onClick={handleReset} variant="secondary">
             Reset
           </Button>

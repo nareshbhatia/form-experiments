@@ -18,9 +18,7 @@ export function MainNav() {
           <NavLink
             className={cn(
               'transition-colors hover:text-foreground/80',
-              pathname.startsWith(item.href)
-                ? 'text-foreground'
-                : 'text-foreground/60',
+              pathname === item.href ? 'text-foreground' : 'text-foreground/60',
             )}
             key={item.href}
             to={item.href}

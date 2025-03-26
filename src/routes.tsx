@@ -1,5 +1,6 @@
 import { RootLayout } from './app/root';
 import { ModularFormPage } from './app/routes/modular-form/route';
+import { OrderFormPage } from './app/routes/order-form/route';
 import { SimpleFormPage } from './app/routes/simple-form/route';
 import { RoutePath } from '@/config/RoutePath';
 import type { RouteObject } from 'react-router';
@@ -15,6 +16,10 @@ export const routes: RouteObject[] = [
       {
         path: RoutePath.ModularForm,
         element: <ModularFormPage />,
+      },
+      {
+        path: RoutePath.OrderForm,
+        element: <OrderFormPage />,
       },
     ],
   },

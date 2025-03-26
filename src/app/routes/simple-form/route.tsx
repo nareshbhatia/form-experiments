@@ -3,7 +3,7 @@
 import { UserForm } from './UserForm';
 import { ObjectViewer } from '@/components/ObjectViewer';
 import { user1 } from '@/data';
-import type { User } from '@/schema';
+import type { User } from '@/types';
 import { useState } from 'react';
 
 export function SimpleFormPage() {
@@ -16,7 +16,7 @@ export function SimpleFormPage() {
   return (
     <div className="container flex-1">
       <main className="flex flex-col gap-8 py-8">
-        <UserForm onSubmit={handleSubmit} user={user} />
+        <UserForm existingUser={user} onSubmit={handleSubmit} />
         <ObjectViewer o={user} />
       </main>
     </div>

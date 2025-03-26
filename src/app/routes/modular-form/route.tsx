@@ -3,7 +3,7 @@
 import { UserProfileForm } from './UserProfileForm';
 import { ObjectViewer } from '@/components/ObjectViewer';
 import { userProfile1 } from '@/data';
-import type { UserProfile } from '@/schema';
+import type { UserProfile } from '@/types';
 import { useState } from 'react';
 
 export function ModularFormPage() {
@@ -18,7 +18,10 @@ export function ModularFormPage() {
   return (
     <div className="container flex-1">
       <main className="flex flex-col gap-8 py-8">
-        <UserProfileForm onSubmit={handleSubmit} userProfile={userProfile} />
+        <UserProfileForm
+          existingUserProfile={userProfile}
+          onSubmit={handleSubmit}
+        />
         <ObjectViewer o={userProfile} />
       </main>
     </div>

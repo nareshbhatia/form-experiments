@@ -14,4 +14,8 @@ export const mainNavItems: NavItem[] = [
     title: 'Modular Form',
     href: RoutePath.ModularForm,
   },
+  {
+    title: 'Order Form',
+    href: RoutePath.OrderForm,
+  },
 ];
