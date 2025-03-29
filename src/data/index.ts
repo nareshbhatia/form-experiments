@@ -3,6 +3,7 @@ import type {
   Category,
   InputOrder,
   Product,
+  TreeNode,
   User,
   UserProfile,
 } from '@/types';
@@ -990,13 +991,30 @@ export const productMap = new Map<string, Product>([
 
 export const products: Product[] = Array.from(productMap.values());
 
+export const productTree: TreeNode = {
+  id: 'products',
+  name: 'Products',
+  children: Array.from(categoryMap.values()).map((category) => ({
+    id: category.id,
+    name: category.name,
+    children: Array.from(productMap.values())
+      .filter((product) => product.categoryId === category.id)
+      .map((product) => ({
+        id: product.id,
+        name: product.name,
+      })),
+  })),
+};
+
 // ---------- InputOrder ----------
 export const newOrder: InputOrder = {
   id: '',
   product1Id: '',
+  product2Id: '',
 };
 
 export const inputOrder1: InputOrder = {
   id: 'order-1',
   product1Id: 'apple-ipad',
+  product2Id: 'apple-imac',
 };

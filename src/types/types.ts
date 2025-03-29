@@ -19,7 +19,7 @@ export interface UserProfile {
   address: Address;
 }
 
-// ---------- Shopping Cart ----------
+// ---------- Order ----------
 
 export interface Category {
   id: string;
@@ -51,9 +51,10 @@ export interface Order {
 export interface InputOrder {
   id: string;
   product1Id: string;
+  product2Id: string;
 }
 
-// ---------- Shopping Cart UI Types ----------
+// ---------- Order UI Types ----------
 
 export interface UiProduct {
   product: Product;
@@ -63,4 +64,12 @@ export interface UiProduct {
 export interface UiOrderItem {
   orderItem: OrderItem;
   uiProduct: UiProduct;
+}
+
+// ---------- Tree Structure ----------
+
+export interface TreeNode {
+  id: string;
+  name: string;
+  children?: TreeNode[];
 }

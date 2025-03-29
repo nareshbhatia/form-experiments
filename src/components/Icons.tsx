@@ -1,17 +1,13 @@
-import {
-  AtomIcon,
-  ChevronRightIcon,
-  MailIcon,
-  Loader2Icon,
-} from 'lucide-react';
+import { Atom, ChevronDown, ChevronRight, Mail, Loader2 } from 'lucide-react';
 
 export type IconProps = React.HTMLAttributes<SVGElement>;
 
 export const Icons = {
-  atom: AtomIcon,
-  chevronRight: ChevronRightIcon,
-  loader2: Loader2Icon,
-  mail: MailIcon,
+  atom: Atom,
+  chevronDown: ChevronDown,
+  chevronRight: ChevronRight,
+  loader2: Loader2,
+  mail: Mail,
   moon: (props: IconProps) => (
     // https://www.radix-ui.com/icons
     <svg fill="none" height="15" viewBox="0 0 15 15" width="15" {...props}>

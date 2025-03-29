@@ -1,6 +1,13 @@
 'use client';
 
+import { Icons } from '@/components/Icons';
 import { Button } from '@/components/ui/button';
+import {
+  DropdownMenu,
+  DropdownMenuCheckboxItem,
+  DropdownMenuContent,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
 import {
   Form,
   FormControl,
@@ -46,35 +53,70 @@ export function OrderForm({
   return (
     <Form {...form}>
       <form
-        className="flex flex-col gap-y-6"
+        className="space-y-8 max-w-xl"
         onSubmit={form.handleSubmit(onSubmit)}
       >
-        <div className="flex flex-col gap-y-4">
-          <FormField
-            control={form.control}
-            name="product1Id"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Name</FormLabel>
-                <Select onValueChange={field.onChange} value={field.value}>
-                  <FormControl>
-                    <SelectTrigger>
-                      <SelectValue placeholder="Select a product" />
-                    </SelectTrigger>
-                  </FormControl>
-                  <SelectContent>
-                    {products.map((product) => (
-                      <SelectItem key={product.id} value={product.id}>
-                        {product.name}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-        </div>
+        {/* ---------- Select ---------- */}
+        <FormField
+          control={form.control}
+          name="product1Id"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Product 1</FormLabel>
+              <Select onValueChange={field.onChange} value={field.value}>
+                <FormControl>
+                  <SelectTrigger>
+                    <SelectValue placeholder="Select a product" />
+                  </SelectTrigger>
+                </FormControl>
+                <SelectContent>
+                  {products.map((product) => (
+                    <SelectItem key={product.id} value={product.id}>
+                      {product.name}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        {/* ---------- Dropdown Menu ---------- */}
+        <FormField
+          control={form.control}
+          name="product2Id"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Product 2</FormLabel>
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button variant="outline">
+                    {field.value
+                      ? (products.find((p) => p.id === field.value)?.name ??
+                        field.value)
+                      : 'Select product 2'}
+                    <Icons.chevronDown className="text-muted-foreground" />
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end">
+                  {products.map((product) => (
+                    <DropdownMenuCheckboxItem
+                      checked={product.id === field.value}
+                      key={product.id}
+                      onClick={() => {
+                        field.onChange(product.id);
+                      }}
+                    >
+                      {product.name}
+                    </DropdownMenuCheckboxItem>
+                  ))}
+                </DropdownMenuContent>
+              </DropdownMenu>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
 
         <div className="flex gap-2">
           <Button type="submit">{existingOrder ? 'Update' : 'Create'}</Button>
