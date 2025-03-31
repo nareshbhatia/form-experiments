@@ -30,6 +30,7 @@ import { newOrder } from '@/data';
 import type { InputOrder, Product, TreeNode } from '@/types';
 import { inputOrderSchema } from '@/types';
 import { zodResolver } from '@hookform/resolvers/zod';
+import type { ControllerRenderProps, FieldPath } from 'react-hook-form';
 import { useForm } from 'react-hook-form';
 
 export interface OrderFormProps {
@@ -58,16 +59,16 @@ export function OrderForm({
   // Recursive function to render nested menu items
   const renderTreeNodes = (
     nodes: TreeNode[] | undefined,
-    field: any,
+    field: ControllerRenderProps<InputOrder, FieldPath<InputOrder>>,
     level = 0,
   ) => {
-    if (!nodes || nodes.length === 0) return null;
+    if (!nodes || nodes.length === 0) return undefined;
 
     return nodes.map((node) => {
       // If the node has children, it's not a leaf node
       const hasChildren = node.children && node.children.length > 0;
 
-      if (hasChildren) {
+      if (hasChildren === true) {
         // Render a submenu for nodes with children
         return (
           <DropdownMenuSub key={node.id}>
