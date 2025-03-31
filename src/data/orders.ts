@@ -6,6 +6,7 @@ export const newOrder: InputOrder = {
   product1Id: '',
   product2Id: '',
   product3Id: '',
+  product4Id: '',
 };
 
 export const inputOrder1: InputOrder = {
@@ -13,4 +14,5 @@ export const inputOrder1: InputOrder = {
   product1Id: 'apple-ipad',
   product2Id: 'apple-imac',
   product3Id: 'apple-macbook-pro',
+  product4Id: 'pharrell-williams-happy',
 };

@@ -191,6 +191,42 @@ export function OrderForm({
           )}
         />
 
+        {/* ---------- Command Menu ---------- */}
+        <FormField
+          control={form.control}
+          name="product4Id"
+          render={({ field }) => (
+            <FormItem className="flex flex-col items-start">
+              <FormLabel>Product 4</FormLabel>
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button className="inline-flex w-fit" variant="outline">
+                    {field.value
+                      ? (products.find((p) => p.id === field.value)?.name ??
+                        field.value)
+                      : 'Select product 4'}
+                    <Icons.chevronDown className="text-muted-foreground" />
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end">
+                  {products.map((product) => (
+                    <DropdownMenuCheckboxItem
+                      checked={product.id === field.value}
+                      key={product.id}
+                      onClick={() => {
+                        field.onChange(product.id);
+                      }}
+                    >
+                      {product.name}
+                    </DropdownMenuCheckboxItem>
+                  ))}
+                </DropdownMenuContent>
+              </DropdownMenu>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
         <div className="flex gap-2">
           <Button type="submit">{existingOrder ? 'Update' : 'Create'}</Button>
           <Button onClick={handleReset} variant="secondary">

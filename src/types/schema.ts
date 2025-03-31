@@ -52,6 +52,7 @@ export const inputOrderSchema = z.object({
   product1Id: z.string(),
   product2Id: z.string(),
   product3Id: z.string(),
+  product4Id: z.string(),
 });
 
 export const uiProductSchema = z.object({

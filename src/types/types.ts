@@ -53,6 +53,7 @@ export interface InputOrder {
   product1Id: string;
   product2Id: string;
   product3Id: string;
+  product4Id: string;
 }
 
 // ---------- Order UI Types ----------
