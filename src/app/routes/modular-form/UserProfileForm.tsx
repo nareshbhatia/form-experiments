@@ -32,7 +32,7 @@ export function UserProfileForm({
   return (
     <Form {...form}>
       <form
-        className="flex flex-col gap-y-6"
+        className="space-y-8 max-w-xl"
         onSubmit={form.handleSubmit(onSubmit)}
       >
         <UserForm />
