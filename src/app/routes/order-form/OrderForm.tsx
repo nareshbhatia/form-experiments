@@ -1,6 +1,7 @@
 'use client';
 
 import { Icons } from '@/components/Icons';
+import { TreeSelect } from '@/components/TreeSelect/TreeSelect';
 import { Button } from '@/components/ui/button';
 import {
   Command,
@@ -14,9 +15,6 @@ import {
   DropdownMenu,
   DropdownMenuCheckboxItem,
   DropdownMenuContent,
-  DropdownMenuSub,
-  DropdownMenuSubContent,
-  DropdownMenuSubTrigger,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import {
@@ -44,7 +42,6 @@ import { cn } from '@/lib/utils';
 import type { InputOrder, Product, TreeNode } from '@/types';
 import { inputOrderSchema } from '@/types';
 import { zodResolver } from '@hookform/resolvers/zod';
-import type { ControllerRenderProps, FieldPath } from 'react-hook-form';
 import { useForm } from 'react-hook-form';
 
 export interface OrderFormProps {
@@ -78,46 +75,6 @@ export function OrderForm({
     if (productId === undefined) return 'Select product';
     const product = products.find((product) => product.id === productId);
     return product ? getProductDisplayText(product) : productId;
-  };
-
-  // Recursive function to render nested menu items
-  const renderTreeNodes = (
-    nodes: TreeNode[] | undefined,
-    field: ControllerRenderProps<InputOrder, FieldPath<InputOrder>>,
-    level = 0,
-  ) => {
-    if (!nodes || nodes.length === 0) return undefined;
-
-    return nodes.map((node) => {
-      // If the node has children, it's not a leaf node
-      const hasChildren = node.children && node.children.length > 0;
-
-      if (hasChildren === true) {
-        // Render a submenu for nodes with children
-        return (
-          <DropdownMenuSub key={node.id}>
-            <DropdownMenuSubTrigger>
-              <span>{node.name}</span>
-            </DropdownMenuSubTrigger>
-            <DropdownMenuSubContent>
-              {renderTreeNodes(node.children, field, level + 1)}
-            </DropdownMenuSubContent>
-          </DropdownMenuSub>
-        );
-      }
-      // Render selectable items for leaf nodes
-      return (
-        <DropdownMenuCheckboxItem
-          checked={node.id === field.value}
-          key={node.id}
-          onClick={() => {
-            field.onChange(node.id);
-          }}
-        >
-          {getProductIdDisplayText(node.id)}
-        </DropdownMenuCheckboxItem>
-      );
-    });
   };
 
   return (
@@ -192,18 +149,12 @@ export function OrderForm({
           render={({ field }) => (
             <FormItem className="flex flex-col items-start">
               <FormLabel>Product 3</FormLabel>
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <Button className="inline-flex w-fit" variant="outline">
-                    {getProductIdDisplayText(field.value)}
-                    <Icons.chevronDown className="text-muted-foreground" />
-                  </Button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent align="end">
-                  {/* Start rendering from categories (second level) */}
-                  {renderTreeNodes(productTree.children, field)}
-                </DropdownMenuContent>
-              </DropdownMenu>
+              <TreeSelect
+                onChange={field.onChange}
+                placeholder="Select a product"
+                rootNode={productTree}
+                value={field.value}
+              />
               <FormMessage />
             </FormItem>
           )}
