@@ -71,12 +71,11 @@ export function OrderForm({
   };
 
   // ----- Helper functions to get the display text for a product -----
-  const getProductDisplayText = (product: Product) => {
-    return `${product.manufacturer} - ${product.name}`;
-  };
+  const getProductDisplayText = (product: Product) =>
+    `${product.manufacturer} - ${product.name}`;
 
   const getProductIdDisplayText = (productId: string | undefined) => {
-    if (!productId) return 'Select product';
+    if (productId === undefined) return 'Select product';
     const product = products.find((product) => product.id === productId);
     return product ? getProductDisplayText(product) : productId;
   };
@@ -240,11 +239,11 @@ export function OrderForm({
                       <CommandGroup>
                         {products.map((product) => (
                           <CommandItem
-                            value={getProductDisplayText(product)}
                             key={product.id}
                             onSelect={() => {
                               form.setValue('product4Id', product.id);
                             }}
+                            value={getProductDisplayText(product)}
                           >
                             <Icons.check
                               className={cn(
