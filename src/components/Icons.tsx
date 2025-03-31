@@ -1,9 +1,17 @@
-import { Atom, ChevronDown, ChevronRight, Mail, Loader2 } from 'lucide-react';
+import {
+  Atom,
+  Check,
+  ChevronDown,
+  ChevronRight,
+  Mail,
+  Loader2,
+} from 'lucide-react';
 
 export type IconProps = React.HTMLAttributes<SVGElement>;
 
 export const Icons = {
   atom: Atom,
+  check: Check,
   chevronDown: ChevronDown,
   chevronRight: ChevronRight,
   loader2: Loader2,

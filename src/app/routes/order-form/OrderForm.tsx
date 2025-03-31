@@ -3,6 +3,14 @@
 import { Icons } from '@/components/Icons';
 import { Button } from '@/components/ui/button';
 import {
+  Command,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+  CommandList,
+} from '@/components/ui/command';
+import {
   DropdownMenu,
   DropdownMenuCheckboxItem,
   DropdownMenuContent,
@@ -20,6 +28,11 @@ import {
   FormMessage,
 } from '@/components/ui/form';
 import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from '@/components/ui/popover';
+import {
   Select,
   SelectContent,
   SelectItem,
@@ -27,6 +40,7 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { newOrder } from '@/data';
+import { cn } from '@/lib/utils';
 import type { InputOrder, Product, TreeNode } from '@/types';
 import { inputOrderSchema } from '@/types';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -54,6 +68,17 @@ export function OrderForm({
 
   const handleReset = () => {
     form.reset(existingOrder ?? newOrder);
+  };
+
+  // ----- Helper functions to get the display text for a product -----
+  const getProductDisplayText = (product: Product) => {
+    return `${product.manufacturer} - ${product.name}`;
+  };
+
+  const getProductIdDisplayText = (productId: string | undefined) => {
+    if (!productId) return 'Select product';
+    const product = products.find((product) => product.id === productId);
+    return product ? getProductDisplayText(product) : productId;
   };
 
   // Recursive function to render nested menu items
@@ -90,7 +115,7 @@ export function OrderForm({
             field.onChange(node.id);
           }}
         >
-          {node.name}
+          {getProductIdDisplayText(node.id)}
         </DropdownMenuCheckboxItem>
       );
     });
@@ -118,7 +143,7 @@ export function OrderForm({
                 <SelectContent>
                   {products.map((product) => (
                     <SelectItem key={product.id} value={product.id}>
-                      {product.name}
+                      {getProductDisplayText(product)}
                     </SelectItem>
                   ))}
                 </SelectContent>
@@ -138,10 +163,7 @@ export function OrderForm({
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
                   <Button className="inline-flex w-fit" variant="outline">
-                    {field.value
-                      ? (products.find((p) => p.id === field.value)?.name ??
-                        field.value)
-                      : 'Select product 2'}
+                    {getProductIdDisplayText(field.value)}
                     <Icons.chevronDown className="text-muted-foreground" />
                   </Button>
                 </DropdownMenuTrigger>
@@ -154,7 +176,7 @@ export function OrderForm({
                         field.onChange(product.id);
                       }}
                     >
-                      {product.name}
+                      {getProductDisplayText(product)}
                     </DropdownMenuCheckboxItem>
                   ))}
                 </DropdownMenuContent>
@@ -174,10 +196,7 @@ export function OrderForm({
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
                   <Button className="inline-flex w-fit" variant="outline">
-                    {field.value
-                      ? (products.find((p) => p.id === field.value)?.name ??
-                        field.value)
-                      : 'Select product 3'}
+                    {getProductIdDisplayText(field.value)}
                     <Icons.chevronDown className="text-muted-foreground" />
                   </Button>
                 </DropdownMenuTrigger>
@@ -198,30 +217,52 @@ export function OrderForm({
           render={({ field }) => (
             <FormItem className="flex flex-col items-start">
               <FormLabel>Product 4</FormLabel>
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <Button className="inline-flex w-fit" variant="outline">
-                    {field.value
-                      ? (products.find((p) => p.id === field.value)?.name ??
-                        field.value)
-                      : 'Select product 4'}
-                    <Icons.chevronDown className="text-muted-foreground" />
-                  </Button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent align="end">
-                  {products.map((product) => (
-                    <DropdownMenuCheckboxItem
-                      checked={product.id === field.value}
-                      key={product.id}
-                      onClick={() => {
-                        field.onChange(product.id);
-                      }}
-                    >
-                      {product.name}
-                    </DropdownMenuCheckboxItem>
-                  ))}
-                </DropdownMenuContent>
-              </DropdownMenu>
+              <Popover>
+                <PopoverTrigger asChild>
+                  <FormControl>
+                    <Button className="inline-flex w-fit" variant="outline">
+                      {getProductIdDisplayText(field.value)}
+                      <Icons.chevronDown className="text-muted-foreground" />
+                    </Button>
+                  </FormControl>
+                </PopoverTrigger>
+                <PopoverContent className="p-0 w-auto">
+                  <Command
+                    filter={(value, search) => {
+                      if (value.toLowerCase().includes(search.toLowerCase()))
+                        return 1;
+                      return 0;
+                    }}
+                  >
+                    <CommandInput placeholder="Search product..." />
+                    <CommandList>
+                      <CommandEmpty>No product found.</CommandEmpty>
+                      <CommandGroup>
+                        {products.map((product) => (
+                          <CommandItem
+                            value={getProductDisplayText(product)}
+                            key={product.id}
+                            onSelect={() => {
+                              form.setValue('product4Id', product.id);
+                            }}
+                          >
+                            <Icons.check
+                              className={cn(
+                                'mr-2',
+                                product.id === field.value
+                                  ? 'opacity-100'
+                                  : 'opacity-0',
+                              )}
+                            />
+                            {getProductDisplayText(product)}
+                          </CommandItem>
+                        ))}
+                      </CommandGroup>
+                    </CommandList>
+                  </Command>
+                </PopoverContent>
+              </Popover>
+
               <FormMessage />
             </FormItem>
           )}
