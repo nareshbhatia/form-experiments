@@ -87,11 +87,11 @@ export function OrderForm({
           control={form.control}
           name="product2Id"
           render={({ field }) => (
-            <FormItem>
+            <FormItem className="flex flex-col items-start">
               <FormLabel>Product 2</FormLabel>
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
-                  <Button variant="outline">
+                  <Button variant="outline" className="inline-flex w-fit">
                     {field.value
                       ? (products.find((p) => p.id === field.value)?.name ??
                         field.value)
