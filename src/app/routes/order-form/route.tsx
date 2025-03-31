@@ -2,7 +2,7 @@
 
 import { OrderForm } from './OrderForm';
 import { ObjectViewer } from '@/components/ObjectViewer';
-import { inputOrder1, products } from '@/data';
+import { inputOrder1, productTree, products } from '@/data';
 import type { InputOrder } from '@/types';
 import { useState } from 'react';
 
@@ -21,6 +21,7 @@ export function OrderFormPage() {
         <OrderForm
           existingOrder={inputOrder}
           onSubmit={handleSubmit}
+          productTree={productTree}
           products={products}
         />
         <ObjectViewer o={inputOrder} />

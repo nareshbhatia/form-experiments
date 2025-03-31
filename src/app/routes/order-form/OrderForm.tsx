@@ -6,6 +6,9 @@ import {
   DropdownMenu,
   DropdownMenuCheckboxItem,
   DropdownMenuContent,
+  DropdownMenuSub,
+  DropdownMenuSubContent,
+  DropdownMenuSubTrigger,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import {
@@ -24,7 +27,7 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { newOrder } from '@/data';
-import type { InputOrder, Product } from '@/types';
+import type { InputOrder, Product, TreeNode } from '@/types';
 import { inputOrderSchema } from '@/types';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
@@ -32,12 +35,14 @@ import { useForm } from 'react-hook-form';
 export interface OrderFormProps {
   existingOrder?: InputOrder;
   products: Product[];
+  productTree: TreeNode;
   onSubmit: (inputOrder: InputOrder) => void;
 }
 
 export function OrderForm({
   existingOrder,
   products,
+  productTree,
   onSubmit,
 }: OrderFormProps) {
   const form = useForm<InputOrder>({
@@ -48,6 +53,46 @@ export function OrderForm({
 
   const handleReset = () => {
     form.reset(existingOrder ?? newOrder);
+  };
+
+  // Recursive function to render nested menu items
+  const renderTreeNodes = (
+    nodes: TreeNode[] | undefined,
+    field: any,
+    level = 0,
+  ) => {
+    if (!nodes || nodes.length === 0) return null;
+
+    return nodes.map((node) => {
+      // If the node has children, it's not a leaf node
+      const hasChildren = node.children && node.children.length > 0;
+
+      if (hasChildren) {
+        // Render a submenu for nodes with children
+        return (
+          <DropdownMenuSub key={node.id}>
+            <DropdownMenuSubTrigger>
+              <span>{node.name}</span>
+            </DropdownMenuSubTrigger>
+            <DropdownMenuSubContent>
+              {renderTreeNodes(node.children, field, level + 1)}
+            </DropdownMenuSubContent>
+          </DropdownMenuSub>
+        );
+      }
+      // Render selectable items for leaf nodes
+      return (
+        <DropdownMenuCheckboxItem
+          checked={node.id === field.value}
+          key={node.id}
+          onClick={() => {
+            field.onChange(node.id);
+          }}
+        >
+          {node.name}
+        </DropdownMenuCheckboxItem>
+      );
+    });
   };
 
   return (
@@ -91,7 +136,7 @@ export function OrderForm({
               <FormLabel>Product 2</FormLabel>
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
-                  <Button variant="outline" className="inline-flex w-fit">
+                  <Button className="inline-flex w-fit" variant="outline">
                     {field.value
                       ? (products.find((p) => p.id === field.value)?.name ??
                         field.value)
@@ -127,7 +172,7 @@ export function OrderForm({
               <FormLabel>Product 3</FormLabel>
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
-                  <Button variant="outline" className="inline-flex w-fit">
+                  <Button className="inline-flex w-fit" variant="outline">
                     {field.value
                       ? (products.find((p) => p.id === field.value)?.name ??
                         field.value)
@@ -136,17 +181,8 @@ export function OrderForm({
                   </Button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="end">
-                  {products.map((product) => (
-                    <DropdownMenuCheckboxItem
-                      checked={product.id === field.value}
-                      key={product.id}
-                      onClick={() => {
-                        field.onChange(product.id);
-                      }}
-                    >
-                      {product.name}
-                    </DropdownMenuCheckboxItem>
-                  ))}
+                  {/* Start rendering from categories (second level) */}
+                  {renderTreeNodes(productTree.children, field)}
                 </DropdownMenuContent>
               </DropdownMenu>
               <FormMessage />
