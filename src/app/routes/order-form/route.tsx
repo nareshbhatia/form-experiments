@@ -2,13 +2,13 @@
 
 import { OrderForm } from './OrderForm';
 import { ObjectViewer } from '@/components/ObjectViewer';
-import { inputOrder1, productTree, products } from '@/data';
+import { newOrder, productTree, products } from '@/data';
 import type { InputOrder } from '@/types';
 import { useState } from 'react';
 
 export function OrderFormPage() {
   const [inputOrder, setInputOrder] = useState<InputOrder | undefined>(
-    inputOrder1,
+    newOrder,
   );
 
   function handleSubmit(newInputOrder: InputOrder) {

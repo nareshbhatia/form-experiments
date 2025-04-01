@@ -45,8 +45,9 @@ export function TreeSelect({
 
   // Helper function to get display text for a node
   const getNodeDisplayText = (nodeId: string | undefined) => {
-    if (nodeId === undefined) return placeholder;
-    return nodeMap.get(nodeId)?.name ?? nodeId;
+    if (nodeId === undefined) return undefined;
+    const node = nodeMap.get(nodeId);
+    return node ? node.name : undefined;
   };
 
   // Recursive function to render nested menu items
@@ -92,11 +93,13 @@ export function TreeSelect({
           className={cn('inline-flex w-fit', className)}
           variant="outline"
         >
-          {getNodeDisplayText(value)}
+          {getNodeDisplayText(value) ?? (
+            <span className="text-muted-foreground">{placeholder}</span>
+          )}
           <Icons.chevronDown className="text-muted-foreground" />
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent align="end">
+      <DropdownMenuContent align="start">
         {renderTreeNodes(rootNode.children)}
       </DropdownMenuContent>
     </DropdownMenu>

@@ -49,10 +49,11 @@ export const orderItemSchema = z.object({
 
 export const inputOrderSchema = z.object({
   id: z.string(),
-  product1Id: z.string(),
-  product2Id: z.string(),
-  product3Id: z.string(),
-  product4Id: z.string(),
+  product1Id: z.string().optional(),
+  product2Id: z.string().optional(),
+  product3Id: z.string().optional(),
+  product4Id: z.string().optional(),
+  product5Id: z.string().optional(),
 });
 
 export const uiProductSchema = z.object({
