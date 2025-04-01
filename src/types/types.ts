@@ -50,10 +50,11 @@ export interface Order {
 
 export interface InputOrder {
   id: string;
-  product1Id: string;
-  product2Id: string;
-  product3Id: string;
-  product4Id: string;
+  product1Id?: string;
+  product2Id?: string;
+  product3Id?: string;
+  product4Id?: string;
+  product5Id?: string;
 }
 
 // ---------- Order UI Types ----------

@@ -13,8 +13,10 @@ import {
 } from '@/components/ui/command';
 import {
   DropdownMenu,
-  DropdownMenuCheckboxItem,
   DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuRadioGroup,
+  DropdownMenuRadioItem,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import {
@@ -44,6 +46,8 @@ import { inputOrderSchema } from '@/types';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 
+const SELECT_PRODUCT_PLACEHOLDER = 'Select a product';
+
 export interface OrderFormProps {
   existingOrder?: InputOrder;
   products: Product[];
@@ -72,9 +76,9 @@ export function OrderForm({
     `${product.manufacturer} - ${product.name}`;
 
   const getProductIdDisplayText = (productId: string | undefined) => {
-    if (productId === undefined) return 'Select product';
+    if (productId === undefined) return undefined;
     const product = products.find((product) => product.id === productId);
-    return product ? getProductDisplayText(product) : productId;
+    return product ? getProductDisplayText(product) : undefined;
   };
 
   return (
@@ -93,7 +97,7 @@ export function OrderForm({
               <Select onValueChange={field.onChange} value={field.value}>
                 <FormControl>
                   <SelectTrigger>
-                    <SelectValue placeholder="Select a product" />
+                    <SelectValue placeholder={SELECT_PRODUCT_PLACEHOLDER} />
                   </SelectTrigger>
                 </FormControl>
                 <SelectContent>
@@ -109,7 +113,7 @@ export function OrderForm({
           )}
         />
 
-        {/* ---------- Dropdown Menu ---------- */}
+        {/* ---------- Dropdown Menu with DropdownMenuItem ---------- */}
         <FormField
           control={form.control}
           name="product2Id"
@@ -119,22 +123,64 @@ export function OrderForm({
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
                   <Button className="inline-flex w-fit" variant="outline">
-                    {getProductIdDisplayText(field.value)}
+                    {getProductIdDisplayText(field.value) ?? (
+                      <span className="text-muted-foreground">
+                        {SELECT_PRODUCT_PLACEHOLDER}
+                      </span>
+                    )}
                     <Icons.chevronDown className="text-muted-foreground" />
                   </Button>
                 </DropdownMenuTrigger>
-                <DropdownMenuContent align="end">
+                <DropdownMenuContent align="start">
                   {products.map((product) => (
-                    <DropdownMenuCheckboxItem
-                      checked={product.id === field.value}
+                    <DropdownMenuItem
                       key={product.id}
                       onClick={() => {
                         field.onChange(product.id);
                       }}
                     >
                       {getProductDisplayText(product)}
-                    </DropdownMenuCheckboxItem>
+                    </DropdownMenuItem>
                   ))}
+                </DropdownMenuContent>
+              </DropdownMenu>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        {/* ---------- Dropdown Menu with DropdownMenuRadioItem ---------- */}
+        <FormField
+          control={form.control}
+          name="product3Id"
+          render={({ field }) => (
+            <FormItem className="flex flex-col items-start">
+              <FormLabel>Product 3</FormLabel>
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button className="inline-flex w-fit" variant="outline">
+                    {getProductIdDisplayText(field.value) ?? (
+                      <span className="text-muted-foreground">
+                        {SELECT_PRODUCT_PLACEHOLDER}
+                      </span>
+                    )}
+                    <Icons.chevronDown className="text-muted-foreground" />
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="start">
+                  <DropdownMenuRadioGroup
+                    onValueChange={field.onChange}
+                    value={field.value}
+                  >
+                    {products.map((product) => (
+                      <DropdownMenuRadioItem
+                        key={product.id}
+                        value={product.id}
+                      >
+                        {getProductDisplayText(product)}
+                      </DropdownMenuRadioItem>
+                    ))}
+                  </DropdownMenuRadioGroup>
                 </DropdownMenuContent>
               </DropdownMenu>
               <FormMessage />
@@ -145,13 +191,13 @@ export function OrderForm({
         {/* ---------- Dropdown Menu ---------- */}
         <FormField
           control={form.control}
-          name="product3Id"
+          name="product4Id"
           render={({ field }) => (
             <FormItem className="flex flex-col items-start">
-              <FormLabel>Product 3</FormLabel>
+              <FormLabel>Product 4</FormLabel>
               <TreeSelect
                 onChange={field.onChange}
-                placeholder="Select a product"
+                placeholder={SELECT_PRODUCT_PLACEHOLDER}
                 rootNode={productTree}
                 value={field.value}
               />
@@ -163,15 +209,19 @@ export function OrderForm({
         {/* ---------- Command Menu ---------- */}
         <FormField
           control={form.control}
-          name="product4Id"
+          name="product5Id"
           render={({ field }) => (
             <FormItem className="flex flex-col items-start">
-              <FormLabel>Product 4</FormLabel>
+              <FormLabel>Product 5</FormLabel>
               <Popover>
                 <PopoverTrigger asChild>
                   <FormControl>
                     <Button className="inline-flex w-fit" variant="outline">
-                      {getProductIdDisplayText(field.value)}
+                      {getProductIdDisplayText(field.value) ?? (
+                        <span className="text-muted-foreground">
+                          {SELECT_PRODUCT_PLACEHOLDER}
+                        </span>
+                      )}
                       <Icons.chevronDown className="text-muted-foreground" />
                     </Button>
                   </FormControl>
@@ -192,7 +242,7 @@ export function OrderForm({
                           <CommandItem
                             key={product.id}
                             onSelect={() => {
-                              form.setValue('product4Id', product.id);
+                              form.setValue('product5Id', product.id);
                             }}
                             value={getProductDisplayText(product)}
                           >
