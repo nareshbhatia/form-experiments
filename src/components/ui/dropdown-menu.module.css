@@ -128,7 +128,6 @@
 
 .subTrigger {
   composes: item;
-  padding-left: 2rem;
 }
 
 .subTrigger[data-state='open'] {
