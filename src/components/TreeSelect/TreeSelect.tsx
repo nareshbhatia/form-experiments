@@ -11,12 +11,12 @@ import {
 } from '@/components/ui/dropdown-menu';
 import { cn } from '@/lib/utils';
 import type { TreeNode } from '@/types';
-import { useMemo } from 'react';
 
 export interface TreeSelectProps {
   value?: string;
   onChange: (value: string) => void;
-  rootNode: TreeNode;
+  tree: TreeNode;
+  treeNodeMap: Map<string, TreeNode>;
   placeholder?: string;
   className?: string;
 }
@@ -24,29 +24,15 @@ export interface TreeSelectProps {
 export function TreeSelect({
   value,
   onChange,
-  rootNode,
+  tree,
+  treeNodeMap,
   placeholder = 'Select an item',
   className,
 }: TreeSelectProps) {
-  // Create a map of node IDs to nodes when component mounts
-  const nodeMap = useMemo(() => {
-    const map = new Map<string, TreeNode>();
-
-    const addNodeToMap = (node: TreeNode) => {
-      map.set(node.id, node);
-      if (node.children) {
-        node.children.forEach(addNodeToMap);
-      }
-    };
-
-    addNodeToMap(rootNode);
-    return map;
-  }, [rootNode]);
-
   // Helper function to get display text for a node
   const getNodeDisplayText = (nodeId: string | undefined) => {
     if (nodeId === undefined) return undefined;
-    const node = nodeMap.get(nodeId);
+    const node = treeNodeMap.get(nodeId);
     return node ? node.name : undefined;
   };
 
@@ -100,7 +86,7 @@ export function TreeSelect({
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="start">
-        {renderTreeNodes(rootNode.children)}
+        {renderTreeNodes(tree.children)}
       </DropdownMenuContent>
     </DropdownMenu>
   );

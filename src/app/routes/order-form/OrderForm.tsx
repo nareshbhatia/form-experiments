@@ -42,8 +42,9 @@ import {
 import { newOrder } from '@/data';
 import { cn } from '@/lib/utils';
 import type { InputOrder, Product, TreeNode } from '@/types';
-import { inputOrderSchema } from '@/types';
+import { inputOrderSchema, treeToMap } from '@/types';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { useMemo } from 'react';
 import { useForm } from 'react-hook-form';
 
 const SELECT_PRODUCT_PLACEHOLDER = 'Select a product';
@@ -61,6 +62,11 @@ export function OrderForm({
   productTree,
   onSubmit,
 }: OrderFormProps) {
+  const productTreeNodeMap = useMemo(
+    () => treeToMap(productTree),
+    [productTree],
+  );
+
   const form = useForm<InputOrder>({
     resolver: zodResolver(inputOrderSchema),
     mode: 'onChange',
@@ -198,7 +204,8 @@ export function OrderForm({
               <TreeSelect
                 onChange={field.onChange}
                 placeholder={SELECT_PRODUCT_PLACEHOLDER}
-                rootNode={productTree}
+                tree={productTree}
+                treeNodeMap={productTreeNodeMap}
                 value={field.value}
               />
               <FormMessage />

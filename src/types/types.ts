@@ -76,3 +76,46 @@ export interface TreeNode {
   name: string;
   children?: TreeNode[];
 }
+
+/**
+ * Converts a tree structure into a flat Map for efficient lookups by node ID.
+ *
+ * @template T - A type that extends TreeNode, allowing the function to work with any tree node type
+ * @param {T} tree - The root node of the tree to convert
+ * @returns {Map<string, T>} - A Map where keys are node IDs and values are the corresponding nodes
+ *
+ * @example
+ * const tree = {
+ *   id: "1",
+ *   name: "root",
+ *   children: [
+ *     { id: "2", name: "child1" },
+ *     { id: "3", name: "child2" }
+ *   ]
+ * };
+ * const nodeMap = treeToMap(tree);
+ * // nodeMap.get("2") returns the child1 node
+ */
+export function treeToMap<T extends TreeNode>(tree: T): Map<string, T> {
+  // Initialize an empty Map to store the flattened tree structure
+  const map = new Map<string, T>();
+
+  /**
+   * Recursively traverses the tree and adds each node to the Map.
+   * @param {T} node - The current node being processed
+   */
+  function addNodeToMap(node: T) {
+    map.set(node.id, node);
+
+    if (node.children) {
+      for (const child of node.children) {
+        addNodeToMap(child as T);
+      }
+    }
+  }
+
+  // Start the recursive traversal from the root node
+  addNodeToMap(tree);
+
+  return map;
+}
