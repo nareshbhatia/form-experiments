@@ -20,7 +20,6 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import {
-  Form,
   FormControl,
   FormField,
   FormItem,
@@ -45,7 +44,7 @@ import type { InputOrder, Product, TreeNode } from '@/types';
 import { inputOrderSchema, treeToMap } from '@/types';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMemo } from 'react';
-import { useForm } from 'react-hook-form';
+import { FormProvider, useForm } from 'react-hook-form';
 
 const SELECT_PRODUCT_PLACEHOLDER = 'Select a product';
 
@@ -67,14 +66,15 @@ export function OrderForm({
     [productTree],
   );
 
-  const form = useForm<InputOrder>({
+  const methods = useForm<InputOrder>({
     resolver: zodResolver(inputOrderSchema),
     mode: 'onChange',
     defaultValues: existingOrder ?? newOrder,
   });
+  const { control, handleSubmit, reset, setValue } = methods;
 
   const handleReset = () => {
-    form.reset(existingOrder ?? newOrder);
+    reset(existingOrder ?? newOrder);
   };
 
   // ----- Helper functions to get the display text for a product -----
@@ -88,14 +88,11 @@ export function OrderForm({
   };
 
   return (
-    <Form {...form}>
-      <form
-        className="space-y-8 max-w-xl"
-        onSubmit={form.handleSubmit(onSubmit)}
-      >
+    <FormProvider {...methods}>
+      <form className="space-y-8 max-w-xl" onSubmit={handleSubmit(onSubmit)}>
         {/* ---------- Select ---------- */}
         <FormField
-          control={form.control}
+          control={control}
           name="product1Id"
           render={({ field }) => (
             <FormItem>
@@ -121,7 +118,7 @@ export function OrderForm({
 
         {/* ---------- Dropdown Menu with DropdownMenuItem ---------- */}
         <FormField
-          control={form.control}
+          control={control}
           name="product2Id"
           render={({ field }) => (
             <FormItem className="flex flex-col items-start">
@@ -157,7 +154,7 @@ export function OrderForm({
 
         {/* ---------- Dropdown Menu with DropdownMenuRadioItem ---------- */}
         <FormField
-          control={form.control}
+          control={control}
           name="product3Id"
           render={({ field }) => (
             <FormItem className="flex flex-col items-start">
@@ -196,7 +193,7 @@ export function OrderForm({
 
         {/* ---------- Dropdown Menu ---------- */}
         <FormField
-          control={form.control}
+          control={control}
           name="product4Id"
           render={({ field }) => (
             <FormItem className="flex flex-col items-start">
@@ -215,7 +212,7 @@ export function OrderForm({
 
         {/* ---------- Command Menu ---------- */}
         <FormField
-          control={form.control}
+          control={control}
           name="product5Id"
           render={({ field }) => (
             <FormItem className="flex flex-col items-start">
@@ -249,7 +246,7 @@ export function OrderForm({
                           <CommandItem
                             key={product.id}
                             onSelect={() => {
-                              form.setValue('product5Id', product.id);
+                              setValue('product5Id', product.id);
                             }}
                             value={getProductDisplayText(product)}
                           >
@@ -282,6 +279,6 @@ export function OrderForm({
           </Button>
         </div>
       </form>
-    </Form>
+    </FormProvider>
   );
 }

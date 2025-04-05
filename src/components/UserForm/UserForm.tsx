@@ -13,14 +13,14 @@ import { Input } from '@/components/ui/input';
 import { useFormContext } from 'react-hook-form';
 
 export function UserForm() {
-  const form = useFormContext();
+  const { control } = useFormContext();
 
   return (
     <>
       <Heading3>User</Heading3>
 
       <FormField
-        control={form.control}
+        control={control}
         name="user.firstName"
         render={({ field }) => (
           <FormItem>
@@ -34,7 +34,7 @@ export function UserForm() {
       />
 
       <FormField
-        control={form.control}
+        control={control}
         name="user.lastName"
         render={({ field }) => (
           <FormItem>
@@ -48,7 +48,7 @@ export function UserForm() {
       />
 
       <FormField
-        control={form.control}
+        control={control}
         name="user.email"
         render={({ field }) => (
           <FormItem>

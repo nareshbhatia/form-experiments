@@ -19,14 +19,14 @@ export interface AddressFormProps {
 }
 
 export function AddressForm({ title, parentName }: AddressFormProps) {
-  const form = useFormContext();
+  const { control } = useFormContext();
 
   return (
     <>
       {title !== undefined ? <Heading3>{title}</Heading3> : undefined}
 
       <FormField
-        control={form.control}
+        control={control}
         name={`${parentName}.company`}
         render={({ field }) => (
           <FormItem>
@@ -40,7 +40,7 @@ export function AddressForm({ title, parentName }: AddressFormProps) {
       />
 
       <FormField
-        control={form.control}
+        control={control}
         name={`${parentName}.street`}
         render={({ field }) => (
           <FormItem>
@@ -55,7 +55,7 @@ export function AddressForm({ title, parentName }: AddressFormProps) {
 
       <div className="flex gap-x-4">
         <FormField
-          control={form.control}
+          control={control}
           name={`${parentName}.city`}
           render={({ field }) => (
             <FormItem className="flex-1">
@@ -69,7 +69,7 @@ export function AddressForm({ title, parentName }: AddressFormProps) {
         />
 
         <FormField
-          control={form.control}
+          control={control}
           name={`${parentName}.state`}
           render={({ field }) => (
             <FormItem className="flex-1">
@@ -83,7 +83,7 @@ export function AddressForm({ title, parentName }: AddressFormProps) {
         />
 
         <FormField
-          control={form.control}
+          control={control}
           name={`${parentName}.zip`}
           render={({ field }) => (
             <FormItem className="flex-1">

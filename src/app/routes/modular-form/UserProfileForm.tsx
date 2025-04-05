@@ -3,12 +3,11 @@
 import { AddressForm } from '@/components/AddressForm';
 import { UserForm } from '@/components/UserForm';
 import { Button } from '@/components/ui/button';
-import { Form } from '@/components/ui/form';
 import { newUserProfile } from '@/data';
 import { userProfileSchema } from '@/types';
 import type { UserProfile } from '@/types';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useForm } from 'react-hook-form';
+import { FormProvider, useForm } from 'react-hook-form';
 
 export interface UserProfileFormProps {
   existingUserProfile?: UserProfile;
@@ -19,22 +18,20 @@ export function UserProfileForm({
   existingUserProfile,
   onSubmit,
 }: UserProfileFormProps) {
-  const form = useForm<UserProfile>({
+  const methods = useForm<UserProfile>({
     resolver: zodResolver(userProfileSchema),
     mode: 'onChange',
     defaultValues: existingUserProfile ?? newUserProfile,
   });
+  const { handleSubmit, reset } = methods;
 
   const handleReset = () => {
-    form.reset(existingUserProfile ?? newUserProfile);
+    reset(existingUserProfile ?? newUserProfile);
   };
 
   return (
-    <Form {...form}>
-      <form
-        className="space-y-8 max-w-xl"
-        onSubmit={form.handleSubmit(onSubmit)}
-      >
+    <FormProvider {...methods}>
+      <form className="space-y-8 max-w-xl" onSubmit={handleSubmit(onSubmit)}>
         <UserForm />
         <AddressForm parentName="address" title="Address" />
 
@@ -47,6 +44,6 @@ export function UserProfileForm({
           </Button>
         </div>
       </form>
-    </Form>
+    </FormProvider>
   );
 }

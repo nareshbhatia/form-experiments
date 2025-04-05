@@ -2,7 +2,6 @@
 
 import { Button } from '@/components/ui/button';
 import {
-  Form,
   FormControl,
   FormDescription,
   FormField,
@@ -15,7 +14,7 @@ import { newUser } from '@/data';
 import { userSchema } from '@/types';
 import type { User } from '@/types';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useForm } from 'react-hook-form';
+import { FormProvider, useForm } from 'react-hook-form';
 
 export interface UserFormProps {
   existingUser?: User;
@@ -23,24 +22,22 @@ export interface UserFormProps {
 }
 
 export function UserForm({ existingUser, onSubmit }: UserFormProps) {
-  const form = useForm<User>({
+  const methods = useForm<User>({
     resolver: zodResolver(userSchema),
     mode: 'onChange',
     defaultValues: existingUser ?? newUser,
   });
+  const { control, handleSubmit, reset } = methods;
 
   const handleReset = () => {
-    form.reset(existingUser ?? newUser);
+    reset(existingUser ?? newUser);
   };
 
   return (
-    <Form {...form}>
-      <form
-        className="space-y-8 max-w-xl"
-        onSubmit={form.handleSubmit(onSubmit)}
-      >
+    <FormProvider {...methods}>
+      <form className="space-y-8 max-w-xl" onSubmit={handleSubmit(onSubmit)}>
         <FormField
-          control={form.control}
+          control={control}
           name="firstName"
           render={({ field }) => (
             <FormItem>
@@ -54,7 +51,7 @@ export function UserForm({ existingUser, onSubmit }: UserFormProps) {
         />
 
         <FormField
-          control={form.control}
+          control={control}
           name="lastName"
           render={({ field }) => (
             <FormItem>
@@ -68,7 +65,7 @@ export function UserForm({ existingUser, onSubmit }: UserFormProps) {
         />
 
         <FormField
-          control={form.control}
+          control={control}
           name="email"
           render={({ field }) => (
             <FormItem>
@@ -91,6 +88,6 @@ export function UserForm({ existingUser, onSubmit }: UserFormProps) {
           </Button>
         </div>
       </form>
-    </Form>
+    </FormProvider>
   );
 }

@@ -4,14 +4,7 @@ import type * as LabelPrimitive from '@radix-ui/react-label';
 import { Slot } from '@radix-ui/react-slot';
 import * as React from 'react';
 import type { ControllerProps, FieldPath, FieldValues } from 'react-hook-form';
-import {
-  Controller,
-  FormProvider,
-  useFormContext,
-  useFormState,
-} from 'react-hook-form';
-
-const Form = FormProvider;
+import { Controller, useFormContext, useFormState } from 'react-hook-form';
 
 type FormFieldContextValue<
   TFieldValues extends FieldValues = FieldValues,
@@ -152,7 +145,6 @@ function FormMessage({ className, ...props }: React.ComponentProps<'p'>) {
 
 export {
   useFormField,
-  Form,
   FormItem,
   FormLabel,
   FormControl,
