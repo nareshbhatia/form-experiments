@@ -19,6 +19,7 @@ export interface TreeSelectProps {
   treeNodeMap: Map<string, TreeNode>;
   placeholder?: string;
   className?: string;
+  disabled?: boolean;
 }
 
 export function TreeSelect({
@@ -28,6 +29,7 @@ export function TreeSelect({
   treeNodeMap,
   placeholder = 'Select an item',
   className,
+  disabled,
 }: TreeSelectProps) {
   // Helper function to get display text for a node
   const getNodeDisplayText = (nodeId: string | undefined) => {
@@ -74,7 +76,7 @@ export function TreeSelect({
 
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger asChild>
+      <DropdownMenuTrigger asChild disabled={disabled}>
         <Button
           className={cn('inline-flex w-fit', className)}
           variant="outline"
