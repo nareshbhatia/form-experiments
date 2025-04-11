@@ -1,5 +1,3 @@
-'use client';
-
 import { Icons } from '@/components/Icons';
 import { TreeSelect } from '@/components/TreeSelect/TreeSelect';
 import { Button } from '@/components/ui/button';
@@ -41,48 +39,45 @@ import {
 import { newOrder } from '@/data';
 import { cn } from '@/lib/utils';
 import type { InputOrder, Product, TreeNode } from '@/types';
-import { inputOrderSchema, treeToMap } from '@/types';
+import { inputOrderSchema } from '@/types';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useMemo } from 'react';
+import { useEffect } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 
 const SELECT_PRODUCT_PLACEHOLDER = 'Select a product';
 
 export interface OrderFormProps {
-  existingOrder?: InputOrder;
+  inputOrder: InputOrder;
   products: Product[];
   productTree: TreeNode;
+  productTreeNodeMap: Map<string, TreeNode>;
   onSubmit: (inputOrder: InputOrder) => void;
 }
 
 export function OrderForm({
-  existingOrder,
+  inputOrder,
   products,
   productTree,
+  productTreeNodeMap,
   onSubmit,
 }: OrderFormProps) {
-  const productTreeNodeMap = useMemo(
-    () => treeToMap(productTree),
-    [productTree],
-  );
-
   const methods = useForm<InputOrder>({
     resolver: zodResolver(inputOrderSchema),
     mode: 'onChange',
-    defaultValues: existingOrder ?? newOrder,
+    defaultValues: newOrder,
   });
   const { control, handleSubmit, reset, setValue } = methods;
 
-  const handleReset = () => {
-    reset(existingOrder ?? newOrder);
-  };
+  useEffect(() => {
+    reset(inputOrder);
+  }, [inputOrder, reset]);
 
   // ----- Helper functions to get the display text for a product -----
   const getProductDisplayText = (product: Product) =>
     `${product.manufacturer} - ${product.name}`;
 
-  const getProductIdDisplayText = (productId: string | undefined) => {
-    if (productId === undefined) return undefined;
+  const getProductIdDisplayText = (productId: string) => {
+    if (productId === '') return undefined;
     const product = products.find((product) => product.id === productId);
     return product ? getProductDisplayText(product) : undefined;
   };
@@ -273,9 +268,8 @@ export function OrderForm({
         />
 
         <div className="flex gap-2">
-          <Button type="submit">{existingOrder ? 'Update' : 'Create'}</Button>
-          <Button onClick={handleReset} variant="secondary">
-            Reset
+          <Button type="submit">
+            {inputOrder.id === '' ? 'Create' : 'Update'} Order
           </Button>
         </div>
       </form>

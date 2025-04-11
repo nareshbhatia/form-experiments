@@ -48,12 +48,15 @@ export const orderItemSchema = z.object({
 });
 
 export const inputOrderSchema = z.object({
+  // id = "" implies a new order
   id: z.string(),
-  product1Id: z.string().optional(),
-  product2Id: z.string().optional(),
-  product3Id: z.string().optional(),
-  product4Id: z.string().optional(),
-  product5Id: z.string().optional(),
+
+  // productId = "" implies a no product specified
+  product1Id: z.string(),
+  product2Id: z.string(),
+  product3Id: z.string(),
+  product4Id: z.string(),
+  product5Id: z.string(),
 });
 
 export const uiProductSchema = z.object({

@@ -18,4 +18,8 @@ export const mainNavItems: NavItem[] = [
     title: 'Order Form',
     href: RoutePath.OrderForm,
   },
+  {
+    title: 'Dialog Form',
+    href: RoutePath.DialogForm,
+  },
 ];

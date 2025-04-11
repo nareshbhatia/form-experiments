@@ -1,4 +1,5 @@
 import { RootLayout } from './app/root';
+import { DialogFormPage } from './app/routes/dialog-form/route';
 import { ModularFormPage } from './app/routes/modular-form/route';
 import { OrderFormPage } from './app/routes/order-form/route';
 import { SimpleFormPage } from './app/routes/simple-form/route';
@@ -20,6 +21,10 @@ export const routes: RouteObject[] = [
       {
         path: RoutePath.OrderForm,
         element: <OrderFormPage />,
+      },
+      {
+        path: RoutePath.DialogForm,
+        element: <DialogFormPage />,
       },
     ],
   },

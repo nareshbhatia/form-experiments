@@ -49,12 +49,15 @@ export interface Order {
 }
 
 export interface InputOrder {
+  // id = "" implies a new order
   id: string;
-  product1Id?: string;
-  product2Id?: string;
-  product3Id?: string;
-  product4Id?: string;
-  product5Id?: string;
+
+  // productId = "" implies a no product specified
+  product1Id: string;
+  product2Id: string;
+  product3Id: string;
+  product4Id: string;
+  product5Id: string;
 }
 
 // ---------- Order UI Types ----------
